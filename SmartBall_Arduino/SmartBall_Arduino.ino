@@ -1,9 +1,22 @@
-void setup() {
-  // put your setup code here, to run once:
+//Arduino side
+//This Program sends value of phot transistor.
 
+
+int Analog0;//Analog Pin 0 of Aruduino
+int out_byte;//Value that Serial output.
+
+void setup() {
+  //To start Serial communicate.
+  Serial.begin(9600);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  //to read value of AnalogPin0 (0~1023)
+  in0 = analogRead(0);
+  //Change the value in the range from 0 to 255
+  outByte = map(in0, 0, 1023, 0, 255);
+  //Send out_byte in serial（BYTE Format）
+  Serial.print(outByte, BYTE);
+  //Loop 10 times per second
+  delay(100);
 }
