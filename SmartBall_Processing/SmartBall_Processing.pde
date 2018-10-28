@@ -44,9 +44,10 @@ color on = color(84, 145, 158);
 int[] values_input;
 
 
+
 void setup() {
   //size(470, 200);
-  fullScreen();
+
 
   // Prints out the available serial ports.
   println(Arduino.list());
@@ -68,26 +69,31 @@ void setup() {
   }//INPUT pin
 
 
+
   //arduino.pinMode(2, Arduino.INPUT);
 }
 
 void draw() {
   background(off);
   stroke(on);
+  int analog_0 = arduino.analogRead(0);
+
+  println(analog_0);
 
   //Photo Transisitor's on and off. 
-
-  if (arduino.digitalRead(2) == 1) {
-    // arduino.digitalWrite(9, Arduino.HIGH);
-    println("HIGH");
-    //values[pin] = Arduino.HIGH;
-    rect(100,100,100,100);
-    text("Happy",100,100);
-  } else {
-    // arduino.digitalWrite(9, Arduino.LOW);
-    println("LOW");
-    //values[pin] = Arduino.LOW;
-  }
+  /*
+  if (arduino.digitalRead(2) == 0) {
+   // arduino.digitalWrite(9, Arduino.HIGH);
+   println("HIGH");
+   //values[pin] = Arduino.HIGH;
+   rect(100,100,100,100);
+   text("Happy",100,100);
+   } else {
+   // arduino.digitalWrite(9, Arduino.LOW);
+   println("LOW");
+   //values[pin] = Arduino.LOW;
+   }
+   */
 }
 
 /*for (int i = 0; i <= 13; i++) {
@@ -121,4 +127,5 @@ void mousePressed()
  https://teratail.com/questions/12299
  http://kousaku-kousaku.blogspot.com/2008/10/arduino.html
  http://d.hatena.ne.jp/afeq/20110211/1297407108
+ https://yoppa.org/tau_bmaw13/4772.html
  */
