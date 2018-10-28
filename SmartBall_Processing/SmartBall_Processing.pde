@@ -96,15 +96,7 @@ void draw() {
    */
 }
 
-/*for (int i = 0; i <= 13; i++) {
- if (values[i] == Arduino.HIGH)
- fill(on);
- else
- fill(off);
- 
- rect(420 - i * 30, 30, 20, 20);
- }*/
-//}
+
 
 
 /*
