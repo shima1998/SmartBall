@@ -12,11 +12,11 @@ void setup() {
 
 void loop() {
   //to read value of AnalogPin0 (0~1023)
-  in0 = analogRead(0);
+  Analog0 = analogRead(0);
   //Change the value in the range from 0 to 255
-  outByte = map(in0, 0, 1023, 0, 255);
+  out_byte = map(Analog0, 0, 1023, 0, 255);
   //Send out_byte in serial（BYTE Format）
-  Serial.print(outByte, BYTE);
+  Serial.print(out_byte);
   //Loop 10 times per second
   delay(100);
 }
