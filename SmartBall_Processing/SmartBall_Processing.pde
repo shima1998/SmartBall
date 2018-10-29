@@ -3,6 +3,15 @@
 //Need Library Firmata
 //I start from 181028. 
 
+/*Reference: 
+ https://teratail.com/questions/12299
+ http://kousaku-kousaku.blogspot.com/2008/10/arduino.html
+ http://d.hatena.ne.jp/afeq/20110211/1297407108
+ https://yoppa.org/tau_bmaw13/4772.html
+ http://piyopiyocs.blog115.fc2.com/blog-entry-1125.html
+ https://yoppa.org/geidai_media1_17/8243.html
+ */
+
 /*
 arduino_output
  
@@ -39,46 +48,73 @@ Arduino arduino;
 color off = color(4, 79, 111);
 color on = color(84, 145, 158);
 
-
-
 int[] values_input;
+
+int light_value = 600;//switch
+
+PImage quiz[][];//Quiz Image 
+PImage[][] answer;//Answer Image
+
+int screen = 0;
+
+int Analog(int pin) {
+  int analog_value;
+  analog_value = arduino.analogRead(pin);
+  return analog_value;
+}//Analog Pin
+
+void Button(int x, int y, String alphabet) {
+  fill(255);
+  rect(x, y, 100, 100);
+  fill(0);
+  textSize(20);
+  text(alphabet, x + 10, y + 20);
+}
+
+void Question(int number, int country) {
+  image(quiz[number][country], 0, 0, width, height);
+}
+
 
 
 
 void setup() {
-  //size(470, 200);
-
-
+  quiz = new PImage[8][4];
+  //size(500, 500);
+  fullScreen();
   // Prints out the available serial ports.
   println(Arduino.list());
-
   // Modify this line, by changing the "0" to the index of the serial
   // port corresponding to your Arduino board (as it appears in the list
   // printed by the line above).
   arduino = new Arduino(this, Arduino.list()[0], 57600);
-
   // Alternatively, use the name of the serial port corresponding to your
   // Arduino (in double-quotes), as in the following line.
   //arduino = new Arduino(this, "/dev/tty.usbmodem621", 57600);
 
-  // Set the Arduino digital pins as outputs.
-
-
-  for (int i = 0; i <= 13; i++) {
-    arduino.pinMode(i, Arduino.INPUT);
-  }//INPUT pin
-
-
-
-  //arduino.pinMode(2, Arduino.INPUT);
+  quiz[0][0] = loadImage("Q1.jpg");
 }
 
 void draw() {
-  background(off);
-  stroke(on);
-  int analog_0 = arduino.analogRead(0);
 
-  println(analog_0);
+
+  switch(screen) {
+  case 0:
+    background(off);
+    stroke(on);
+    break;
+  case 1:
+    Question(0, 0);
+    break;
+  }
+
+  if (Analog(0) < light_value) {
+    screen = 1;
+  } else {
+    screen = 0;
+  }
+
+  println(Analog(0));
 
   //Photo Transisitor's on and off. 
   /*
@@ -113,11 +149,4 @@ void mousePressed()
  values[pin] = Arduino.LOW;
  }
  }
- */
-
-/*Reference: 
- https://teratail.com/questions/12299
- http://kousaku-kousaku.blogspot.com/2008/10/arduino.html
- http://d.hatena.ne.jp/afeq/20110211/1297407108
- https://yoppa.org/tau_bmaw13/4772.html
  */
