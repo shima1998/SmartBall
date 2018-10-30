@@ -27,24 +27,25 @@ color on = color(84, 145, 158);
 
 int start_count = 0;//This variable stop malfunction of start up.
 int light_value = 600;//If photo transisitor's value below this value, begin screen transition;
-int language = 0;
+int language = 0;//for change language of quiz
 
 
-PImage[][] quiz;//Quiz Image 
-PImage[][] answer;//Answer Image
+PImage[][] quiz_img;//Quiz Image 
+PImage[][] ans_img;//Answer Image
 
 int main_screen = 0;//variable for MainScreen transition.
-int question_screen = 0;//variable for MainScreen transition.
+int quiz_no = 0;//variable for question start
+int quiz_screen = 0;//variable for QuestionScreen transition.
 
 //Functions
 
-int Analog(int pin) {//Analog Pin
+int analog(int pin) {//Analog Pin
   int analog_value;//read by analog pin
   analog_value = arduino.analogRead(pin);
   return analog_value;
 }
 
-void Button(int x, int y, String alphabet, int lang) {//Button to change language
+void button_language(int x, int y, String alphabet, int lang) {//Button to change language
   if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200) {
     fill(0, 255, 0);
     rect(x, y, 200, 100);
@@ -64,14 +65,34 @@ void Button(int x, int y, String alphabet, int lang) {//Button to change languag
   }
 }
 
-void Question(int number, int country) {//Question Screen
-  switch(question_screen) {
+void button_quiz(int x, int y, String alphabet, int quiz) {//Button to change language
+  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200) {
+    fill(0, 255, 0);
+    rect(x, y, 200, 100);
+    fill(0);
+    textSize(20);
+    text(alphabet, x + 10, y + 50);
+  } else {
+    fill(255);
+    rect(x, y, 200, 100);
+    fill(0);
+    textSize(20);
+    text(alphabet, x + 10, y + 50);
+  }
+
+  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200) {
+    main_screen = quiz;
+  }
+}
+
+void quiz(int number, int country) {//Question Screen
+  switch(quiz_screen) {
   case 0:
-    image(quiz[number][country], 0, 0, width, height);//Show Quiz   
+    image(quiz_img[number][country], 0, 0, width, height - 100);//Show Quiz   
     break;
   case 1:
     background(255);
-    image(answer[number][country], -30, 0, width, height / 2 + 200);//Show Answer
+    image(ans_img[number][country], -20, 0, width, height / 2 + 100);//Show Answer
     break;
   }
 }
@@ -79,8 +100,8 @@ void Question(int number, int country) {//Question Screen
 
 
 void setup() {
-  quiz = new PImage[8][4];//Image Initialize
-  answer = new PImage[8][4];
+  quiz_img = new PImage[8][4];//Image Initialize
+  ans_img = new PImage[8][4];
 
   //size(500, 500);
   fullScreen();
@@ -95,25 +116,47 @@ void setup() {
   // Arduino (in double-quotes), as in the following line.
   //arduino = new Arduino(this, "/dev/tty.usbmodem621", 57600);
 
-  quiz[0][0] = loadImage("Q1_j.jpg");
-  answer[0][0] = loadImage("A1_j.jpg");
+  quiz_img[0][0] = loadImage("Q1_j.jpg");
+  ans_img[0][0] = loadImage("A1_j.jpg");
+
+  quiz_img[1][0] = loadImage("Q1_e.jpg");
+  ans_img[1][0] = loadImage("A1_e.jpg");
 }
 
 void draw() {
 
-  if (start_count < 130) { 
+  if (start_count < 130) { //stop malfunction of start up.
     start_count++;
   }
 
   switch(main_screen) {//Screen
   case 0://Start
-    background(200);
+    background(255);
     stroke(0);
 
-    Button(width / 2 - 400, height / 2, "Japanese", 0);//change language to Japanese
-    Button(width / 2 - 200, height / 2, "English", 1);//change language to English
-    Button(width / 2, height / 2, "Chinese", 2);//change language to Chinese
-    Button(width / 2 + 200, height / 2, "Korean", 3);//change language to Korean
+    button_language(width / 2 - 400, height / 2 - 200, "Japanese", 0);//change language to Japanese
+    button_language(width / 2 - 200, height / 2 - 200, "English", 1);//change language to English
+    button_language(width / 2, height / 2 - 200, "Chinese", 2);//change language to Chinese
+    button_language(width / 2 + 200, height / 2 - 200, "Korean", 3);//change language to Korean
+
+
+    switch(quiz_no) {
+    case 0:
+      break;
+    case 1:
+      button_quiz(width / 2 - 400, height / 2 + 100, "Q1", 1);//start Question1
+      break;
+    case 2:
+      button_quiz(width / 2 - 200, height / 2 + 100, "Q2", 2);//start Question2
+      break;
+    case 3:
+      button_quiz(width / 2, height / 2 + 100, "Q3", 3);//start Question3
+      break;
+    case 4:
+      button_quiz(width / 2 + 200, height / 2 + 100, "Q4", 4);//start Question4
+      break;
+    }
+
 
     textSize(30);
     switch(language) {//show language
@@ -132,28 +175,33 @@ void draw() {
     }
     break;
   case 1://Question1,Answer1
-    Question(language, 0);
+    quiz(language, 0);
+    break;
+  case 2://Question2,Answer2
+    quiz(language, 1);
     break;
   }
 
   if (start_count > 120) {//for Screen transition.
-    if (Analog(0) < light_value) {
-      main_screen = 1;
+    if (analog(0) < light_value) {
+      quiz_no = 1;
+    } else if (analog(1) < light_value) {
+      quiz_no = 2;
     }
   }
 
 
-  println(Analog(0));
+  println(analog(0));
 }
 
-void mouseReleased() {
-  if (main_screen != 0 && question_screen == 0 && mouseButton == LEFT) {//Question Screen Transision
-    question_screen = 1;
+void mouseClicked() {
+  if (main_screen != 0 && quiz_screen == 0 && mouseButton == LEFT) {//Question Screen Transision
+    quiz_screen = 1;
   }
 
-  if (main_screen != 0 && question_screen == 1 && mouseButton == RIGHT) {//change Question Screen to Main Screen
+  if (main_screen != 0 && quiz_screen == 1 && mouseButton == RIGHT) {//change Question Screen to Main Screen
     main_screen = 0;
-    question_screen = 0;
+    quiz_screen = 0;
   }
 }
 
