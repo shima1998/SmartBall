@@ -37,65 +37,7 @@ int main_screen = 0;//variable for MainScreen transition.
 int quiz_no = 0;//variable for question start
 int quiz_screen = 0;//variable for QuestionScreen transition.
 
-//Functions
 
-int analog(int pin) {//Analog Pin
-  int analog_value;//read by analog pin
-  analog_value = arduino.analogRead(pin);
-  return analog_value;
-}
-
-void button_language(int x, int y, String alphabet, int lang) {//Button to change language
-  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200) {
-    fill(0, 255, 0);
-    rect(x, y, 200, 100);
-    fill(0);
-    textSize(20);
-    text(alphabet, x + 10, y + 50);
-  } else {
-    fill(255);
-    rect(x, y, 200, 100);
-    fill(0);
-    textSize(20);
-    text(alphabet, x + 10, y + 50);
-  }
-
-  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200 && mousePressed) {
-    language = lang;
-  }
-}
-
-void button_quiz(int x, int y, String alphabet, int quiz) {//Button to change language
-  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200) {
-    fill(0, 255, 0);
-    rect(x, y, 200, 100);
-    fill(0);
-    textSize(20);
-    text(alphabet, x + 10, y + 50);
-  } else {
-    fill(255);
-    rect(x, y, 200, 100);
-    fill(0);
-    textSize(20);
-    text(alphabet, x + 10, y + 50);
-  }
-
-  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200) {
-    main_screen = quiz;
-  }
-}
-
-void quiz(int number, int country) {//Question Screen
-  switch(quiz_screen) {
-  case 0:
-    image(quiz_img[number][country], 0, 0, width, height - 100);//Show Quiz   
-    break;
-  case 1:
-    background(255);
-    image(ans_img[number][country], -20, 0, width, height / 2 + 100);//Show Answer
-    break;
-  }
-}
 
 
 
@@ -206,18 +148,62 @@ void mouseClicked() {
 }
 
 
-/*
-void mousePressed()
- {
- int pin = (450 - mouseX) / 30;
- 
- // Toggle the pin corresponding to the clicked square.
- if (values[pin] == Arduino.LOW) {
- arduino.digitalWrite(pin, Arduino.HIGH);
- values[pin] = Arduino.HIGH;
- } else {
- arduino.digitalWrite(pin, Arduino.LOW);
- values[pin] = Arduino.LOW;
- }
- }
- */
+//Functions
+
+int analog(int pin) {//Analog Pin
+  int analog_value;//read by analog pin
+  analog_value = arduino.analogRead(pin);
+  return analog_value;
+}
+
+void button_language(int x, int y, String alphabet, int lang) {//Button to change language
+  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200) {
+    fill(0, 255, 0);
+    rect(x, y, 200, 100);
+    fill(0);
+    textSize(20);
+    text(alphabet, x + 10, y + 50);
+  } else {
+    fill(255);
+    rect(x, y, 200, 100);
+    fill(0);
+    textSize(20);
+    text(alphabet, x + 10, y + 50);
+  }
+
+  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200 && mousePressed) {
+    language = lang;
+  }
+}
+
+void button_quiz(int x, int y, String alphabet, int quiz) {//Button to change language
+  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200) {
+    fill(0, 255, 0);
+    rect(x, y, 200, 100);
+    fill(0);
+    textSize(20);
+    text(alphabet, x + 10, y + 50);
+  } else {
+    fill(255);
+    rect(x, y, 200, 100);
+    fill(0);
+    textSize(20);
+    text(alphabet, x + 10, y + 50);
+  }
+
+  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200) {
+    main_screen = quiz;
+  }
+}
+
+void quiz(int number, int country) {//Question Screen
+  switch(quiz_screen) {
+  case 0:
+    image(quiz_img[number][country], 0, 0, width, height - 100);//Show Quiz   
+    break;
+  case 1:
+    background(255);
+    image(ans_img[number][country], -20, 0, width, height / 2 + 100);//Show Answer
+    break;
+  }
+}
