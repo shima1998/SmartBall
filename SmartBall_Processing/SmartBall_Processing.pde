@@ -45,21 +45,21 @@ int Analog(int pin) {//Analog Pin
 }
 
 void Button(int x, int y, String alphabet, int lang) {//Button to change language
-  if (mouseX > x && mouseX <= x + 100 && mouseY > y && mouseY <= y + 100) {
+  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200) {
     fill(0, 255, 0);
-    rect(x, y, 100, 100);
+    rect(x, y, 200, 100);
     fill(0);
     textSize(20);
-    text(alphabet, x + 10, y + 20);
+    text(alphabet, x + 10, y + 50);
   } else {
     fill(255);
-    rect(x, y, 100, 100);
+    rect(x, y, 200, 100);
     fill(0);
     textSize(20);
-    text(alphabet, x + 10, y + 20);
+    text(alphabet, x + 10, y + 50);
   }
 
-  if (mouseX > x && mouseX <= x + 100 && mouseY > y && mouseY <= y + 100 && mousePressed) {
+  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 200 && mousePressed) {
     language = lang;
   }
 }
@@ -107,13 +107,32 @@ void draw() {
 
   switch(main_screen) {//Screen
   case 0://Start
-    background(255);
+    background(200);
     stroke(0);
-    text(language, 100, 100);
-    Button(200, 200,"fuck", 3);
+
+    Button(width / 2 - 400, height / 2, "Japanese", 0);//change language to Japanese
+    Button(width / 2 - 200, height / 2, "English", 1);//change language to English
+    Button(width / 2, height / 2, "Chinese", 2);//change language to Chinese
+    Button(width / 2 + 200, height / 2, "Korean", 3);//change language to Korean
+
+    textSize(30);
+    switch(language) {//show language
+    case 0:
+      text("Japanese", 100, 100);
+      break;
+    case 1:
+      text("English", 100, 100);
+      break;
+    case 2:
+      text("Chinese", 100, 100);
+      break;
+    case 3:
+      text("Korean", 100, 100);
+      break;
+    }
     break;
   case 1://Question1,Answer1
-    Question(0, 0);
+    Question(language, 0);
     break;
   }
 
