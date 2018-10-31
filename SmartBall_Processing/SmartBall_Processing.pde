@@ -33,6 +33,7 @@ String[] country = {"j", "e", "c1", "c2", "k"};
 
 PImage[][] quiz_img;//Quiz Image 
 PImage[][] ans_img;//Answer Image
+PImage hakodate_yama;
 
 int main_screen = 0;//variable for MainScreen transition.
 int quiz_screen = 0;//variable for QuestionScreen transition.
@@ -68,6 +69,8 @@ void setup() {
       ans_img[i1][i2] = loadImage("A" + (i2 + 1) +"_" + country[i1] + ".jpg");
     }
   }
+
+  hakodate_yama = loadImage("HakodateYama.jpg");
 }
 
 void draw() {
@@ -79,12 +82,15 @@ void draw() {
   switch(main_screen) {//Screen
   case 0://Start
     background(255);
+    tint(255, 70);
+    image(hakodate_yama, 0, 0, width, height);
+    noTint();
     stroke(0);
 
     button_language(width / 2 - 500, height / 2 - 200, "Japanese", 0);//change language to Japanese
     button_language(width / 2 - 300, height / 2 - 200, "English", 1);//change language to English
-    button_language(width / 2 - 100, height / 2 - 200, "Chinese1", 2);//change language to Chinese1
-    button_language(width / 2 + 100, height / 2 - 200, "Chinese2", 3);//change language to Chinese2
+    button_language(width / 2 - 100, height / 2 - 200, "Traditional Chinese", 2);//change language to Chinese1
+    button_language(width / 2 + 100, height / 2 - 200, "Simplified Chinese", 3);//change language to Chinese2
     button_language(width / 2 + 300, height / 2 - 200, "Korean", 4);//change language to Korean
 
 
@@ -130,10 +136,10 @@ void draw() {
       text("English", 100, 100);
       break;
     case 2:
-      text("Chinese1", 100, 100);
+      text("Traditional Chinese", 100, 100);
       break;
     case 3:
-      text("Chinese2", 100, 100);
+      text("Simplified Chinese", 100, 100);
       break;
     case 4:
       text("Korean", 100, 100);
@@ -285,10 +291,12 @@ void quiz(int number, int country) {//Question Screen
   background(255);
   switch(quiz_screen) {
   case 0:
+    noTint();
     image(quiz_img[number][country], width / 10, 0, width - width / 6, height);//Show Quiz  
     button_ans(width / 2 - 100, height / 2 + 300, "ANSWER");
     break;
   case 1:
+    noTint();
     image(ans_img[number][country], width / 10, 0, width - width / 6, height);//Show Answer
     button_ans(width / 2 + 200, height / 2 + 300, "END");
     break;
