@@ -10,6 +10,7 @@
  https://yoppa.org/tau_bmaw13/4772.html
  http://piyopiyocs.blog115.fc2.com/blog-entry-1125.html
  https://yoppa.org/geidai_media1_17/8243.html
+ https://joppot.info/2016/04/18/3127
  */
 
 //This program base Sample Program "arduino_output" of Firmata.
@@ -37,6 +38,7 @@ PImage hakodate_yama;
 
 int main_screen = 0;//variable for MainScreen transition.
 int quiz_screen = 0;//variable for QuestionScreen transition.
+int[] quiz_num;
 
 boolean[] can_start_quiz;//variable for question start
 
@@ -46,6 +48,7 @@ void setup() {
   quiz_img = new PImage[5][8];//Image Initialize
   ans_img = new PImage[5][8];
   can_start_quiz = new boolean[8];
+  quiz_num = get_no_dup_order_numbers(0, 7);
 
 
   //size(500, 500);
@@ -92,6 +95,8 @@ void draw() {
     button_language(width / 2 - 100, height / 2 - 200, "Traditional Chinese", 2);//change language to Chinese1
     button_language(width / 2 + 100, height / 2 - 200, "Simplified Chinese", 3);//change language to Chinese2
     button_language(width / 2 + 300, height / 2 - 200, "Korean", 4);//change language to Korean
+    
+    button_reset(0, height - 110);
 
 
     if (can_start_quiz[0]) {
@@ -174,35 +179,35 @@ void draw() {
 
   if (start_count > 120) {//for Screen transition.
     if (analog(0) < light_value) {
-      can_start_quiz[0] = true;
+      can_start_quiz[quiz_num[0]] = true;
     } 
 
     if (analog(1) < light_value) {
-      can_start_quiz[1] = true;
+      can_start_quiz[quiz_num[1]] = true;
     }
 
     if (analog(2) < light_value) {
-      can_start_quiz[2] = true;
+      can_start_quiz[quiz_num[2]] = true;
     }
 
     if (analog(3) < light_value) {
-      can_start_quiz[3] = true;
+      can_start_quiz[quiz_num[3]] = true;
     }
 
     if (analog(4) < light_value) {
-      can_start_quiz[4] = true;
+      can_start_quiz[quiz_num[4]] = true;
     }
 
     if (analog(5) < light_value) {
-      can_start_quiz[5] = true;
+      can_start_quiz[quiz_num[5]] = true;
     }
 
     if (analog(6) < light_value) {
-      can_start_quiz[6] = true;
+      can_start_quiz[quiz_num[6]] = true;
     }
 
     if (analog(7) < light_value) {
-      can_start_quiz[7] = true;
+      can_start_quiz[quiz_num[7]] = true;
     }
   }
 
@@ -284,6 +289,39 @@ void button_ans(int x, int y, String alphabet) {//Button to start quiz
   }
 }
 
+void button_reset(int x, int y) {//Button to start quiz
+  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 100) {
+    fill(255, 0, 0);
+    rect(x, y, 200, 100);
+    fill(0);
+    textSize(20);
+    text("RESET", x + 10, y + 50);
+  } else {
+    fill(255);
+    rect(x, y, 200, 100);
+    fill(0);
+    textSize(20);
+    text("RESET", x + 10, y + 50);
+  }
+
+  if (mouseX > x && mouseX <= x + 200 && mouseY > y && mouseY <= y + 100 && mousePressed) {
+    for (int i = 0; i < 8; i++) {
+      can_start_quiz[i] = false;
+    }
+    quiz_num = get_no_dup_order_numbers(0, 7);
+  }
+}
+
+int[] get_no_dup_order_numbers(int start_num, int end_num) {//from https://joppot.info/2016/04/18/3127
+  int num_size = (end_num+1) - start_num; 
+  IntList nums = new IntList(num_size);
+  for (int i = start_num; i <= end_num; i++) {
+    nums.append(i);
+  };
+  nums.shuffle();
+  int[] result = nums.array();
+  return result;
+}
 
 
 
